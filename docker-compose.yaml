@@ -4,7 +4,7 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: Developer
-      MSSQL_SA_PASSWORD: ${SQLSERVER_PASSWORD:?Defina SQLSERVER_PASSWORD no arquivo .env}
+      MSSQL_SA_PASSWORD: ${SQLSERVER_PASSWORD}
     ports:
       - "1433:1433"
     volumes:
@@ -21,9 +21,9 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DATABASE:-dw}
-      POSTGRES_USER: ${POSTGRES_USER:-etl}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -40,7 +40,7 @@ services:
     environment:
       POSTGRES_DB: airflow
       POSTGRES_USER: airflow
-      POSTGRES_PASSWORD: ${AIRFLOW_DB_PASSWORD:?Defina AIRFLOW_DB_PASSWORD no arquivo .env}
+      POSTGRES_PASSWORD: ${AIRFLOW_DB_PASSWORD}
     volumes:
       - airflow_db_data:/var/lib/postgresql/data
     healthcheck:
@@ -69,14 +69,14 @@ services:
       SQLSERVER_PORT: "1433"
       SQLSERVER_DATABASE: AdventureWorks2025
       SQLSERVER_USER: sa
-      SQLSERVER_PASSWORD: ${SQLSERVER_PASSWORD:?Defina SQLSERVER_PASSWORD no arquivo .env}
+      SQLSERVER_PASSWORD: ${SQLSERVER_PASSWORD}
       SQLSERVER_DRIVER: ODBC Driver 18 for SQL Server
       SQLSERVER_TRUST_SERVER_CERTIFICATE: "yes"
       POSTGRES_HOST: postgres
       POSTGRES_PORT: "5432"
-      POSTGRES_DATABASE: ${POSTGRES_DATABASE:-dw}
-      POSTGRES_USER: ${POSTGRES_USER:-etl}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no arquivo .env}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PYTHONPATH: /opt/airflow/project
     ports:
       - "8080:8080"
