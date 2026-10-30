@@ -1,6 +1,8 @@
 services:
   sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    # O backup AdventureWorks2025.bak foi gerado no SQL Server 2025 (versão
+    # interna 998) e não pode ser restaurado em uma instância 2022 (versão 958).
+    image: mcr.microsoft.com/mssql/server:2025-latest
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: Developer
@@ -83,6 +85,7 @@ services:
     volumes:
       - ./dags:/opt/airflow/dags
       - ./src:/opt/airflow/project/src:ro
+      - ./src/data/csv:/opt/airflow/project/src/data/csv
       - airflow_logs:/opt/airflow/logs
     command: standalone
     restart: unless-stopped
