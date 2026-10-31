@@ -86,6 +86,7 @@ services:
       - ./dags:/opt/airflow/dags
       - ./src:/opt/airflow/project/src:ro
       - ./src/data/csv:/opt/airflow/project/src/data/csv
+      - ./src/data/temporarios:/opt/airflow/project/src/data/temporarios
       - airflow_logs:/opt/airflow/logs
     command: standalone
     restart: unless-stopped

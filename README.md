@@ -102,7 +102,47 @@ no contêiner SQL Server. Se o banco `AdventureWorks2025` já existir, a restaur
 `--replace` ao comando. O caminho visto pelo SQL Server pode ser alterado com
 `--backup` ou pela variável `SQLSERVER_BACKUP_PATH`.
 
-### ETL do SQL Server para o PostgreSQL
+### ETL incremental de funcionários do SQL Server para o PostgreSQL
+
+O foco analítico do projeto são os funcionários do schema
+`HumanResources`, complementados pelos nomes de `Person.Person`. A DAG
+`carga_incremental_recursos_humanos_adventureworks`, definida em
+[`dags/carga_incremental_recursos_humanos.py`](./dags/carga_incremental_recursos_humanos.py),
+orquestra a preparação, extração, transformação e carga incremental. Depois de
+restaurar `AdventureWorks2025`, acesse `http://localhost:8080`, habilite a DAG e
+inicie uma execução. Ela também é agendada diariamente.
+
+O Data Warehouse fica no schema `modelo_estrela` do PostgreSQL e contém dois
+esquemas estrela relacionados: quadro atual de funcionários e histórico de
+remuneração. A estratégia observa `ModifiedDate` das tabelas de funcionários,
+departamentos, turnos, históricos de departamento e remuneração, e pessoas. Os
+dados e marcadores de controle são gravados na mesma transação, permitindo
+repetir uma carga sem duplicar registros.
+
+As dez KPIs de funcionários estão implementadas em
+[`src/sql/indicadores.sql`](./src/sql/indicadores.sql). O modelo, o diagrama, a
+granularidade, as limitações da amostra e a explicação da pipeline estão em
+[`docs/ETL_INCREMENTAL.md`](./docs/ETL_INCREMENTAL.md); o diagrama editável está
+em [`docs/modelo_estrela.mmd`](./docs/modelo_estrela.mmd). O esquema PostgreSQL
+está em [`src/sql/criar_data_warehouse.sql`](./src/sql/criar_data_warehouse.sql)
+e a carga em [`src/etl/carga_incremental_recursos_humanos.py`](./src/etl/carga_incremental_recursos_humanos.py).
+O dicionário de dados e os resultados calculados das KPIs estão em
+[`docs/DICIONARIO_DADOS.md`](./docs/DICIONARIO_DADOS.md) e
+[`docs/RESULTADOS_KPIS.md`](./docs/RESULTADOS_KPIS.md), respectivamente.
+
+### Acompanhamento dos requisitos
+
+A avaliação técnica atual, os itens pendentes e a estimativa de progresso estão
+registrados em [`docs/STATUS_TRABALHO.md`](./docs/STATUS_TRABALHO.md). A
+estimativa é de acompanhamento, não substitui a avaliação oficial da disciplina.
+
+Para executar as mesmas etapas manualmente, sem o agendador:
+
+```powershell
+docker compose exec airflow python -m src.etl.carga_incremental_recursos_humanos
+```
+
+### Cópia de aterrissagem CSV (opcional)
 
 Depois de restaurar `AdventureWorks2025`, execute as três etapas abaixo na raiz
 do projeto. Os CSVs brutos e transformados são gravados em `src/data/csv/raw/` e
@@ -120,8 +160,10 @@ a correspondência entre schemas e colunas. A transformação normaliza os nomes
 de colunas para `snake_case`, sem alterar os
 valores; a carga lê os CSVs transformados e substitui as tabelas de destino no
 PostgreSQL. Os schemas de origem são mantidos como schemas no destino. Como os
-dados são carregados como `TEXT`, essa carga é uma etapa de aterrissagem, não um
-modelo dimensional tipado.
+dados são carregados como `TEXT`, essa carga é uma cópia completa de aterrissagem,
+não incremental nem dimensional. Não a utilize como o fluxo de carga exigido no
+trabalho.
 
-O diretório `src/` precisa estar montado com permissão de escrita no contêiner
-Airflow para que os arquivos CSV possam ser gerados.
+Os CSVs legados ficam em `src/data/csv/`. Os arquivos JSON temporários da carga
+incremental ficam em `src/data/temporarios/incremental/`; ambos os diretórios são
+montados com permissão de escrita no Airflow e ignorados pelo Git.

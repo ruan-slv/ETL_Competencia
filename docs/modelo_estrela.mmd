@@ -1,0 +1,68 @@
+erDiagram
+    DIMENSAO_FUNCIONARIO ||--o{ FATO_QUADRO_FUNCIONARIO : "compoe"
+    DIMENSAO_DEPARTAMENTO ||--o{ FATO_QUADRO_FUNCIONARIO : "alocado em"
+    DIMENSAO_TURNO ||--o{ FATO_QUADRO_FUNCIONARIO : "trabalha no"
+    DIMENSAO_DATA ||--o{ FATO_QUADRO_FUNCIONARIO : "contratacao"
+
+    DIMENSAO_FUNCIONARIO ||--o{ FATO_HISTORICO_REMUNERACAO : "recebe"
+    DIMENSAO_DATA ||--o{ FATO_HISTORICO_REMUNERACAO : "alteracao"
+
+    DIMENSAO_FUNCIONARIO {
+        bigint chave_funcionario PK
+        int codigo_funcionario_origem
+        string primeiro_nome
+        string nome_do_meio
+        string sobrenome
+        string titulo
+        string cargo
+        string genero
+        string estado_civil
+        boolean salario_fixo
+        boolean funcionario_atual
+    }
+    DIMENSAO_DEPARTAMENTO {
+        bigint chave_departamento PK
+        int codigo_departamento_origem
+        string nome_departamento
+        string grupo_departamento
+    }
+    DIMENSAO_TURNO {
+        bigint chave_turno PK
+        int codigo_turno_origem
+        string nome_turno
+        time horario_inicio
+        time horario_fim
+    }
+    DIMENSAO_DATA {
+        int chave_data PK
+        date data
+        smallint ano
+        smallint trimestre
+        smallint mes
+        string nome_mes
+        smallint dia
+        smallint dia_da_semana
+        string nome_dia_da_semana
+    }
+    FATO_QUADRO_FUNCIONARIO {
+        bigint chave_registro PK
+        int codigo_funcionario_origem
+        bigint chave_funcionario FK
+        bigint chave_departamento FK
+        bigint chave_turno FK
+        int chave_data_contratacao FK
+        boolean funcionario_atual
+        smallint horas_ferias
+        smallint horas_afastamento
+        decimal taxa_remuneracao_atual
+        smallint frequencia_pagamento_atual
+    }
+    FATO_HISTORICO_REMUNERACAO {
+        bigint chave_evento PK
+        int codigo_funcionario_origem
+        bigint chave_funcionario FK
+        int chave_data_alteracao FK
+        timestamp data_alteracao
+        decimal taxa_remuneracao
+        smallint frequencia_pagamento
+    }

@@ -11,4 +11,8 @@ RUN apt-get update \
 
 USER airflow
 
-RUN pip install --no-cache-dir pyodbc==5.3.0 psycopg2-binary==2.9.13
+RUN pip install --no-cache-dir \
+    pandas==3.1.0 \
+    python-dotenv==1.2.4 \
+    pyodbc==5.3.0 \
+    psycopg2-binary==2.9.13
