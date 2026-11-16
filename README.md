@@ -138,6 +138,16 @@ A avaliação técnica atual, os itens pendentes e a estimativa de progresso est
 registrados em [`docs/STATUS_TRABALHO.md`](./docs/STATUS_TRABALHO.md). A
 estimativa é de acompanhamento, não substitui a avaliação oficial da disciplina.
 
+### Artigo acadêmico
+
+O artigo em Markdown, a versão formatada em DOCX e a pré-visualização em PDF
+estão em [`CONSTRUÇÃO_ARTIGO/`](./CONSTRUÇÃO_ARTIGO/). O texto tem 10 páginas,
+conforme o limite do enunciado, e segue a estrutura introdução, referencial
+teórico, desenvolvimento (OLTP, modelo, dicionário, indicadores, ETL, pipeline e
+resultados) e considerações finais. As instruções para preencher a identificação
+do autor e regerar o documento estão em
+[`CONSTRUÇÃO_ARTIGO/LEIA-ME.md`](./CONSTRUÇÃO_ARTIGO/LEIA-ME.md).
+
 Para executar as mesmas etapas manualmente, sem o agendador:
 
 ```powershell
