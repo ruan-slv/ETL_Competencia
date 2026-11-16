@@ -126,6 +126,8 @@ granularidade, as limitações da amostra e a explicação da pipeline estão em
 em [`docs/modelo_estrela.mmd`](./docs/modelo_estrela.mmd). O esquema PostgreSQL
 está em [`src/sql/criar_data_warehouse.sql`](./src/sql/criar_data_warehouse.sql)
 e a carga em [`src/etl/carga_incremental_recursos_humanos.py`](./src/etl/carga_incremental_recursos_humanos.py).
+O tutorial para representar o modelo estrela no draw.io está em
+[`docs/TUTORIAL_MODELO_ESTRELA_DRAWIO.md`](./docs/TUTORIAL_MODELO_ESTRELA_DRAWIO.md).
 O dicionário de dados e os resultados calculados das KPIs estão em
 [`docs/DICIONARIO_DADOS.md`](./docs/DICIONARIO_DADOS.md) e
 [`docs/RESULTADOS_KPIS.md`](./docs/RESULTADOS_KPIS.md), respectivamente.

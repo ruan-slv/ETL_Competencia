@@ -88,6 +88,7 @@ services:
       - ./src/data/csv:/opt/airflow/project/src/data/csv
       - ./src/data/temporarios:/opt/airflow/project/src/data/temporarios
       - airflow_logs:/opt/airflow/logs
+      - airflow_temp_data:/opt/airflow/project/src/data/temporarios
     command: standalone
     restart: unless-stopped
 
@@ -96,3 +97,4 @@ volumes:
   postgres_data:
   airflow_db_data:
   airflow_logs:
+  airflow_temp_data:
